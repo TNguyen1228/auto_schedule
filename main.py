@@ -110,9 +110,6 @@ def run_pipeline():
 
     # 5. XUẤT BẢNG MẪU VÀ FILE EXCEL
     print(f"\n[5] XUẤT THỜI KHÓA BIỂU:")
-    # In demo 2 lớp đại diện: Lớp 1A (Khối 1) và Lớp 5A (Khối 5)
-    exporter.print_class_timetable('1A')
-    exporter.print_class_timetable('5A')
 
     excel_file = os.path.join(current_dir, "Thoi_Khoa_Bieu_Truong_9_Lop.xlsx")
     exporter.export_to_excel(excel_file)

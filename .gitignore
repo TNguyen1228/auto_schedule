@@ -75,3 +75,5 @@ cover/
 .DS_Store
 Thumbs.db
 
+# Output files
+*.xlsx
