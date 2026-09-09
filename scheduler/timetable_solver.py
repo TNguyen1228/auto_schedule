@@ -202,6 +202,43 @@ class TimetableSolver:
                 model.Add(
                     sum(x[(a.id, d, p)] for a in asg_list for p in active_p_for_day) <= max_limit
                 )
+        
+        # H7 (SOFT). Khuyến khích GV không quá 7 buổi/tuần, cho phép vượt nếu cần thiết
+        teacher_max_sessions_per_week = getattr(self.config, "teacher_max_sessions_per_week", 7)
+        overflow_penalties = []
+
+        for t in self.teachers:
+            t_assignments = [
+                a for a in self.assignments
+                if a.teacher_id == t.id and not a.is_shared_activity
+            ]
+            if not t_assignments:
+                continue
+
+            session_vars = []
+            for d in self.config.days:
+                active_periods = self.config.get_active_periods(d)
+                morning_p = [p for p in active_periods if p in self.config.morning_periods]
+                afternoon_p = [p for p in active_periods if p not in self.config.morning_periods]
+
+                for session_periods in (morning_p, afternoon_p):
+                    if not session_periods:
+                        continue
+                    y = model.NewBoolVar(f"buoi_{t.id}_{d}_{session_periods[0]}")
+                    related_x = [x[(a.id, d, p)] for a in t_assignments for p in session_periods]
+                    for xv in related_x:
+                        model.Add(xv <= y)
+                    model.Add(sum(related_x) >= y)
+                    session_vars.append(y)
+
+            total_sessions = sum(session_vars)
+            overflow = model.NewIntVar(0, len(session_vars), f"overflow_{t.id}")
+            model.Add(overflow >= total_sessions - teacher_max_sessions_per_week)
+            overflow_penalties.append(overflow)
+
+        # Thêm vào mục tiêu: giảm thiểu tổng số buổi vượt ngưỡng 7 của toàn trường
+        if overflow_penalties:
+            model.Minimize(sum(overflow_penalties))
 
         # =========================================================================
         # CHẠY BỘ GIẢI (SOLVER)

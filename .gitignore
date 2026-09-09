@@ -77,3 +77,8 @@ Thumbs.db
 
 # Output files
 *.xlsx
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
