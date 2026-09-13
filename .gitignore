@@ -76,9 +76,11 @@ cover/
 Thumbs.db
 
 # Output files
-.xlsx
+*.xlsx
 
 # Python cache
 __pycache__/
 *.py[cod]
 *$py.class
+Input_Mau_TKB.xlsx
+Thoi_Khoa_Bieu_Truong_9_Lop.xlsx
