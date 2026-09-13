@@ -76,7 +76,7 @@ cover/
 Thumbs.db
 
 # Output files
-*.xlsx
+.xlsx
 
 # Python cache
 __pycache__/

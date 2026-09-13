@@ -42,34 +42,34 @@ class TimetableExporter:
         print(f"THÔNG ĐIỆP: {self.result.message}")
         print("=" * 70)
 
-    def print_class_timetable(self, class_id: str):
-        """In TKB của một lớp ra console dạng bảng phân tách Sáng/Chiều"""
-        class_slots = [s for s in self.result.slots if s.class_id == class_id]
-        grid = {d: {p: "" for p in self.config.all_periods} for d in self.config.days}
-        for s in class_slots:
-            grid[s.day][s.period] = f"{s.subject} ({s.teacher_name})"
+    # def print_class_timetable(self, class_id: str):
+    #     """In TKB của một lớp ra console dạng bảng phân tách Sáng/Chiều"""
+    #     class_slots = [s for s in self.result.slots if s.class_id == class_id]
+    #     grid = {d: {p: "" for p in self.config.all_periods} for d in self.config.days}
+    #     for s in class_slots:
+    #         grid[s.day][s.period] = f"{s.subject} ({s.teacher_name})"
 
-        # Gán ô nghỉ chiều Thứ 6
-        for (d, p) in self.config.closed_slots:
-            grid[d][p] = "[NGHỈ CHIỀU]"
+    #     # Gán ô nghỉ chiều Thứ 6
+    #     for (d, p) in self.config.closed_slots:
+    #         grid[d][p] = "[NGHỈ CHIỀU]"
 
-        print(f"\n--- THỜI KHÓA BIỂU LỚP {class_id} (TIỂU HỌC 2 BUỔI/NGÀY) ---")
-        header = f"{'Buổi':<7} | {'Tiết':<6} | " + " | ".join(f"{d:<24}" for d in self.config.days)
-        print("-" * len(header))
-        print(header)
-        print("-" * len(header))
+    #     print(f"\n--- THỜI KHÓA BIỂU LỚP {class_id} (TIỂU HỌC 2 BUỔI/NGÀY) ---")
+    #     header = f"{'Buổi':<7} | {'Tiết':<6} | " + " | ".join(f"{d:<24}" for d in self.config.days)
+    #     print("-" * len(header))
+    #     print(header)
+    #     print("-" * len(header))
 
-        for session_name, periods in [("SÁNG", self.config.morning_periods), ("CHIỀU", self.config.afternoon_periods)]:
-            for p in periods:
-                s_label = session_name if p == periods[0] else ""
-                row_str = f"{s_label:<7} | Tiết {p:<2} | "
-                cols = []
-                for d in self.config.days:
-                    val = grid[d][p]
-                    cols.append(f"{val:<24}")
-                row_str += " | ".join(cols)
-                print(row_str)
-            print("-" * len(header))
+    #     for session_name, periods in [("SÁNG", self.config.morning_periods), ("CHIỀU", self.config.afternoon_periods)]:
+    #         for p in periods:
+    #             s_label = session_name if p == periods[0] else ""
+    #             row_str = f"{s_label:<7} | Tiết {p:<2} | "
+    #             cols = []
+    #             for d in self.config.days:
+    #                 val = grid[d][p]
+    #                 cols.append(f"{val:<24}")
+    #             row_str += " | ".join(cols)
+    #             print(row_str)
+    #         print("-" * len(header))
 
     def export_to_excel(self, file_path: str = "Thoi_Khoa_Bieu_Truong_9_Lop.xlsx"):
         """
@@ -121,7 +121,7 @@ class TimetableExporter:
 
         col_idx = 4
         for c in self.classes:
-            cell = ws_class.cell(row=current_row, column=col_idx, value=f"Lớp {c.id}\n(Khối {c.grade})")
+            cell = ws_class.cell(row=current_row, column=col_idx, value=f"{c.id}")
             cell.fill = header_fill
             cell.font = header_font
             cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
@@ -210,7 +210,7 @@ class TimetableExporter:
 
         col_idx = 4
         for t in self.teachers:
-            cell = ws_teacher.cell(row=t_row, column=col_idx, value=f"{t.name}\n({t.id})")
+            cell = ws_teacher.cell(row=t_row, column=col_idx, value=f"{t.name}")
             cell.fill = header_fill
             cell.font = header_font
             cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)

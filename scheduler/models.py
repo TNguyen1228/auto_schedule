@@ -38,6 +38,7 @@ class ClassGroup:
     id: str         # Ví dụ: '1A', '2B', '5A'
     name: str       # Ví dụ: 'Lớp 1A'
     grade: int      # Khối/cấp học: 1 đến 5
+    homeroom_teacher_id: Optional[str] = None  # Mã GV chủ nhiệm (nếu có)
 
 @dataclass
 class Teacher:
