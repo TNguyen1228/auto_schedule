@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build Portable Zip Package
+        run: |
+          python -c "
+          import zipfile, os
+          tag = os.environ.get('GITHUB_REF_NAME', 'v1.0.0')
+          zip_name = f'AutoSchedule_{tag}_Portable.zip'
+          files = ['1_CLICK_XEP_LICH.bat', 'CHAY_XEP_LICH.bat', 'main.py', 'generate_phan_cong.py', 'Input_Mau_TKB.xlsx', 'requirements.txt', 'README.md']
+          dirs = ['data', 'scheduler']
+          with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as z:
+              for f in files:
+                  if os.path.exists(f):
+                      z.write(f, arcname=f)
+              for d in dirs:
+                  for root, _, fs in os.walk(d):
+                      if '__pycache__' not in root:
+                          for file in fs:
+                              if file.endswith(('.py', '.xlsx', '.md')):
+                                  fp = os.path.join(root, file)
+                                  z.write(fp, arcname=fp)
+          print(f'Created package: {zip_name}')
+          "
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Phiên bản ${{ github.ref_name }} - Hệ Thống Xếp Thời Khóa Biểu Tiểu Học Tự Động"
+          files: AutoSchedule_*.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true

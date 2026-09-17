@@ -77,6 +77,7 @@ Thumbs.db
 
 # Output files
 *.xlsx
+*.zip
 
 # Python cache
 __pycache__/
