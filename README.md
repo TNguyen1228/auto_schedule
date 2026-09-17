@@ -46,7 +46,19 @@ auto_schedule/
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Chạy Nhanh
+## ⚡ Dành Cho Người Dùng Phổ Thông (Không Cần Gõ Lệnh)
+
+Chỉ cần **nhấp đúp chuột** vào một trong hai file `.bat` có sẵn trong thư mục dự án:
+
+1. **`1_CLICK_XEP_LICH.bat`** *(Khuyên dùng)*:
+   - Tự động nhận diện Python, đọc dữ liệu, giải toán và kiểm định ràng buộc.
+   - **Tự động mở file Excel Thời khóa biểu kết quả** ngay khi hoàn tất.
+2. **`CHAY_XEP_LICH.bat`** *(Menu điều khiển)*:
+   - Hiển thị bảng chọn trực quan: Xếp lịch, Đồng bộ bảng phân công, Mở file Excel đầu vào, Mở file kết quả, Khởi tạo dữ liệu mẫu.
+
+---
+
+## 🚀 Hướng Dẫn Cài Đặt (Dành Cho Lần Đầu)
 
 ### 1. Chuẩn bị môi trường Python (Python 3.10+)
 
